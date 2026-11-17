@@ -1,1 +1,101 @@
 
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Calculator</title>
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #172033;
+  font-family: Arial, sans-serif;
+}
+.calculator {
+  width: 300px;
+  padding: 20px;
+  border-radius: 20px;
+  background: #263449;
+}
+#display {
+  width: 100%;
+  height: 65px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  border: 0;
+  border-radius: 10px;
+  background: white;
+  font-size: 28px;
+  text-align: right;
+  padding: 10px;
+}
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 9px;
+}
+button {
+  height: 58px;
+  border: 0;
+  border-radius: 10px;
+  font-size: 22px;
+  background: #e7edf5;
+}
+button:active { background: #a9c5ef; }
+.equal { background: #20b879; color: white; }
+.clear { background: #ef6464; color: white; }
+</style>
+</head>
+<body>
+<div class="calculator">
+<input id="display" readonly value="0">
+<div class="buttons">
+<button class="clear" onclick="clearDisplay()">C</button>
+<button onclick="del()">⌫</button>
+<button onclick="add('%')">%</button>
+<button onclick="add('/')">÷</button>
+<button onclick="add('7')">7</button>
+<button onclick="add('8')">8</button>
+<button onclick="add('9')">9</button>
+<button onclick="add('*')">×</button>
+<button onclick="add('4')">4</button>
+<button onclick="add('5')">5</button>
+<button onclick="add('6')">6</button>
+<button onclick="add('-')">−</button>
+<button onclick="add('1')">1</button>
+<button onclick="add('2')">2</button>
+<button onclick="add('3')">3</button>
+<button onclick="add('+')">+</button>
+<button onclick="add('0')">0</button>
+<button onclick="add('.')">.</button>
+<button onclick="clearDisplay()">AC</button>
+<button class="equal" onclick="calculate()">=</button>
+</div>
+</div>
+<script>
+const display = document.getElementById('display');
+function add(v) {
+  if (display.value === '0') display.value = v;
+  else display.value += v;
+}
+function clearDisplay() { display.value = '0'; }
+function del() {
+  display.value = display.value.slice(0,-1) || '0';
+}
+function calculate() {
+  try {
+    if (!/^[0-9+*/%.() -]+$/.test(display.value)) throw Error();
+    const result = Function('"use strict"; return (' + display.value + ')')();
+    if (!Number.isFinite(result)) throw Error();
+    display.value = String(result);
+  } catch {
+    display.value = 'Error';
+  }
+}
+</script>
+</body>
+</html>
+
